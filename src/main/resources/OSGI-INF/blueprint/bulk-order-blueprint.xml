@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:camel="http://camel.apache.org/schema/blueprint"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+ <bean id="OrderSupport" class="org.vpspoc.aksjehandle.OrderSupport" />
+ 
+<camelContext id="context" xmlns="http://camel.apache.org/schema/blueprint" xmlns:order="http://vps.com/orders/v1">
+  <route id="bulkOrderRoute">
+    <from uri="file:///fuse-demo/in-bulk"/>
+    <log message="[main]    Processing ${file:name}"/>
+    <wireTap uri="direct:wiretap">
+      <body>
+        <simple></simple>
+      </body>
+    </wireTap>
+    <log message="Wire tape EIP completed"/>
+    <to uri="direct:splitter"/>
+    <log message="[main]    Done processing ${file:name}"/>
+  </route>
+  <route id="wiretapRoute">
+    <from uri="direct:wiretap"/>
+    <log message="[wiretap]  Archiving ${file:name}"/>
+    <to uri="file:///fuse-demo/archive"/>
+  </route>
+  <route id="splitterRoute">
+    <from uri="direct:splitter"/>
+    <split>
+      <xpath>//order:order</xpath>
+      <setHeader headerName="orderId">
+        <xpath>/order:order/@orderId</xpath>
+      </setHeader>
+      <setHeader headerName="type">
+        <method bean="OrderSupport" method="getOrderType"></method>
+      </setHeader>
+      <log message="[splitter]  order ${header.orderId} to order type ${header.type}"/>
+      <recipientList>
+        <simple>file:///fuse-demo/out/bulk-order/${header.type}?fileName=${header.orderId}.xml,direct:filter</simple>
+      </recipientList>
+    </split>
+  </route>
+  <route id="filterRoute">
+    <from uri="direct:filter"/>
+    <filter>
+      <xpath>sum(//order:shareCount/text()) &gt; 100</xpath>
+      <log message="[filter]   Order ${header.orderId} is an order for more than 1000 shares"/>
+    </filter>
+  </route>
+</camelContext>
+
+</blueprint>

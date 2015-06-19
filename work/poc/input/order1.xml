@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Order for Selling the shares-->
+
+<Order type="sell">
+  <orderId>2012_0001</orderId>
+  <clientId>002</clientId>
+  <shareId>xcdr</shareId>
+  <sharePrice>12</sharePrice>
+  <sum>100</sum>
+  <currency>kr</currency>
+  <timestamp>015-06-18T10:21:18+00:00</timestamp>
+</Order>
+

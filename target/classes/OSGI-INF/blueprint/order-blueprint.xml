@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+
+ <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+      <property name="brokerURL" value="tcp://localhost:61616"/>
+      <property name="userName" value="admin"/>
+      <property name="password" value="admin"/>
+  </bean>
+  
+  
+  <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+  <route id="order">
+    <from uri="file:///fuse-demo/in"/>
+    <choice id="orderTypeChoice">
+      <when>
+        <xpath>/Order[@type="buy"]</xpath>
+        <log message="Got order for buying from ${file:name}"/>
+        <to uri="activemq:queue:buy"/>
+        <log message="Order stored in ActiveMQ Server in 'buy' queue."/>
+      </when>
+      <when>
+        <xpath>/Order[@type="sell"]</xpath>
+        <log message="Got order for Selling from ${file:name}"/>
+        <to uri="activemq:queue:sell"/>
+        <log message="Order stored in ActiveMQ Server in 'sell' queue."/>
+      </when>
+      <otherwise>
+        <log message="Got order for unknown from ${file:name}"/>
+        <to uri="activemq:queue:otherOrder"/>
+      </otherwise>
+    </choice>
+  </route>
+</camelContext>
+
+
+
+</blueprint>

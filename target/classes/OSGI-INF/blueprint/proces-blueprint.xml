@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:camel="http://camel.apache.org/schema/blueprint"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+    <!-- this is the JDBC data source Config for postgresql database -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	  <property name="driverClassName" value="org.postgresql.Driver"/>
+	  <property name="url" value="jdbc:postgresql://localhost:5432/demo"/>
+	  <property name="username" value="postgres"/>
+	  <property name="password" value="postgres"/>
+	</bean>
+	
+	 
+	<!-- configure the Camel SQL component to use the JDBC data source -->
+	<bean id="sql" class="org.apache.camel.component.sql.SqlComponent">
+	  <property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+  <camelContext trace="false" id="OrderProcessContext" xmlns="http://camel.apache.org/schema/blueprint">
+  <propertyPlaceholder location="classpath:sql.properties" id="properties"/>
+  <route id="processRoute">
+    <from uri="activemq:queue:process"/>
+    <log message="Order received from ActiveMQ - 'buy' queue."/>
+    <unmarshal>
+      <jaxb contextPath="org.vpspoc.aksjehandle" prettyPrint="true" partClass="org.vpspoc.aksjehandle.Order"/>
+    </unmarshal>
+    <log message="Data unmarshalling JMS to POJO completed.."/>
+    <setHeader headerName="clientId">
+      <simple>${body.clientId}</simple>
+    </setHeader>
+    <log message="clientId $simple{in.header.clientId} added to header"/>
+    <setHeader headerName="sum">
+      <simple>${body.sum}</simple>
+    </setHeader>
+    <log message="sum $simple{in.header.sum} added to header"/>
+    <log message="SQL INSERT {{sql.updateInfo}}"/>
+    <to uri="sql:{{sql.updateInfo}}"/>
+    <log message="Bank operation completed..Client has been Debited/Credit for transaction"/>
+  </route>
+</camelContext>
+
+</blueprint>

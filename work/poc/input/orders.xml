@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orders xmlns="http://vpsdemo.no/order/v1">
+<order type="buy">
+	<orderId>2015_0001</orderId>
+	<clientId>001</clientId>
+	<shareId>xc0c34r</shareId>
+	<shareCount>100</shareCount>
+	<price>112.35</price>
+	<currency>nok</currency>	
+	<timestamp>19-06-2015:13:25:43</timestamp>
+</order>
+<order type="sell">
+	<orderId>2015_0002</orderId>
+	<clientId>002</clientId>
+	<shareId>xc0c34r</shareId>
+	<shareCount>100</shareCount>
+	<price>112.35</price>
+	<currency>nok</currency>
+	<timestamp>19-06-2015:13:25:43</timestamp>
+</order>
+<order type="buy">
+	<orderId>2015_0003</orderId>
+	<clientId>001</clientId>
+	<shareId>xc0c34r</shareId>
+	<shareCount>100</shareCount>
+	<price>112.35</price>
+	<currency>nok</currency>
+	<timestamp>19-06-2015:13:25:43</timestamp>
+</order>
+<order type="sell">
+	<orderId>2015_0004</orderId>
+	<clientId>002</clientId>
+	<shareId>xc0c34r</shareId>
+	<shareCount>100</shareCount>
+	<price>112.35</price>
+	<currency>nok</currency>
+	<timestamp>19-06-2015:13:25:43</timestamp>
+</order>
+<order type="sell">
+	<orderId>2015_0005</orderId>
+	<clientId>002</clientId>
+	<shareId>xc0c34r</shareId>
+	<shareCount>100</shareCount>
+	<price>112.35</price>
+	<currency>nok</currency>
+	<timestamp>19-06-2015:13:25:43</timestamp>
+</order>
+</orders>

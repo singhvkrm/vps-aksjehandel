@@ -1,0 +1,17 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Order">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="orderId"/>
+        <xs:element type="xs:string" name="clientId"/>
+        <xs:element type="xs:string" name="shareId"/>
+        <xs:element type="xs:int" name="sharePrice"/>
+        <xs:element type="xs:int" name="sum"/>
+        
+        <xs:element type="xs:string" name="currency"/>
+        <xs:element type="xs:string" name="timestamp"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="type"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
