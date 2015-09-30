@@ -21,7 +21,7 @@ public class SecuritiesAndRegistrar {
 	
 	public boolean issueAksjebrev() {
 		
-		Aksjebrev.createCertificate();
+		//Aksjebrev.createCertificate();
 		
 		return true;
 		

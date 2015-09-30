@@ -35,10 +35,8 @@
     <setHeader headerName="sum">
       <simple>${body.sum}</simple>
     </setHeader>
-    <log message="sum $simple{in.header.sum} added to header"/>
-    <log message="SQL INSERT {{sql.updateInfo}}"/>
-    <to uri="sql:{{sql.updateInfo}}"/>
-    <log message="Bank operation completed..Client has been Debited/Credit for transaction"/>
+    <to uri="sql:query"/>
+    <log message="Bank operation completed..Client $simple{in.header.clientId} has been Debited/Credit for transaction"/>
   </route>
 </camelContext>
 

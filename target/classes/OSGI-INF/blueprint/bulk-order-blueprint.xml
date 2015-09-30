@@ -8,7 +8,7 @@
  
 <camelContext id="context" xmlns="http://camel.apache.org/schema/blueprint" xmlns:order="http://vps.com/orders/v1">
   <route id="bulkOrderRoute">
-    <from uri="file:///fuse-demo/in-bulk"/>
+    <from uri="file:work/poc/bulkIn"/>
     <log message="[main]    Processing ${file:name}"/>
     <wireTap uri="direct:wiretap">
       <body>
@@ -36,7 +36,7 @@
       </setHeader>
       <log message="[splitter]  order ${header.orderId} to order type ${header.type}"/>
       <recipientList>
-        <simple>file:///fuse-demo/out/bulk-order/${header.type}?fileName=${header.orderId}.xml,direct:filter</simple>
+        <simple>file:work/poc/out/${header.type}?fileName=${header.orderId}.xml,direct:filter</simple>
       </recipientList>
     </split>
   </route>

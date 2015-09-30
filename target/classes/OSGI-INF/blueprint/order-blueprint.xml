@@ -15,7 +15,7 @@
   
   <camelContext xmlns="http://camel.apache.org/schema/blueprint">
   <route id="order">
-    <from uri="file:///fuse-demo/in"/>
+    <from uri="file:work/poc/in"/>
     <choice id="orderTypeChoice">
       <when>
         <xpath>/Order[@type="buy"]</xpath>
@@ -36,7 +36,5 @@
     </choice>
   </route>
 </camelContext>
-
-
 
 </blueprint>
